@@ -1,16 +1,32 @@
 import React, { Component } from 'react'
 import Relay from 'react-relay'
 
+import UpdateHelloMutation from './mutations/update'
+
 class Root extends Component {
 
-  render() {
+  handleClick = world => {
 
-    console.log(this.props)
+    Relay.Store.commitUpdate(
+      new UpdateHelloMutation({
+        id: this.props.hello.id,
+        world: world,
+      }),
+    )
+
+    // UI state...
+    // this.setState({
+    //   isLoading: true,
+    // })
+
+  }
+
+  render = () => {
 
     const { hello: { world } } = this.props
 
     return (
-      <h1>Hello { world }</h1>
+      <h1 onClick={ () => this.handleClick( world === 'Earth' ? 'Mars' : 'Earth' ) }>Hello { world }</h1>
     )
   }
 
